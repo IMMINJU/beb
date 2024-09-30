@@ -71,7 +71,7 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
       </div>
       <ScrollArea className="flex-1">
         <div className="p-2 space-y-1">
-          {(["all", "design", "humor", "tech"] as Category[]).map(
+          {(["all", "tech", "design", "humor"] as Category[]).map(
             (category) => (
               <Button
                 key={category}

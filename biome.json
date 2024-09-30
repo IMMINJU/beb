@@ -10,18 +10,17 @@
       "recommended": true,
       "style": {
         "noNonNullAssertion": "off",
-        "noParameterAssign" : "off"
+        "noParameterAssign": "off"
       },
-      "suspicious":{
+      "suspicious": {
         "noArrayIndexKey": "off"
       },
-      "correctness": {"noUnusedImports": "error"}
+      "correctness": { "noUnusedImports": "error" }
     }
   },
-   "javascript": {
+  "javascript": {
     "formatter": {
       "quoteStyle": "double",
-      "semicolons": "asNeeded",
       "trailingCommas": "es5"
     }
   }
