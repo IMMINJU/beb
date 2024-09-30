@@ -79,12 +79,16 @@ export default function Main({ category }: { category: string }) {
               </Button>
             </div>
 
-            <div className="overflow-auto h-[calc(100vh-60px)] scrollbar-hide">
+            <div
+              id="scrollableDiv"
+              className="overflow-auto h-[calc(100vh-60px)] scrollbar-hide"
+            >
               <InfiniteScroll
                 dataLength={posts.length || 0}
                 next={fetchNextPage}
                 hasMore={!!hasNextPage}
                 loader={<h4>Loading...</h4>}
+                scrollableTarget="scrollableDiv"
               >
                 <div
                   className={clsx("columns-1 gap-4 space-y-4", {
