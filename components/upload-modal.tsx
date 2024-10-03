@@ -22,11 +22,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createClient } from "@/utils/supabase/client"
 import type { PostType } from "@/types/post"
 
-async function createPost(category: string, tweet_url: string) {
+async function createPost(
+  category: string,
+  tweet_url: string,
+  comment?: string
+) {
   const supabase = createClient()
   const { data, error } = await supabase
     .from("posts")
-    .insert([{ category, tweet_url }])
+    .insert([{ category, tweet_url, comment }])
 
   if (error) {
     throw new Error(`Error creating post: ${error.message}`)
@@ -46,7 +50,8 @@ export default function UploadModal({ open, onOpenChange }: Props) {
   const queryClient = useQueryClient()
 
   const mutation = useMutation<null, Error, FormValues>({
-    mutationFn: ({ category, tweet_url }) => createPost(category, tweet_url),
+    mutationFn: ({ category, tweet_url, comment }) =>
+      createPost(category, tweet_url, comment),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["posts"] }),
   })
 
@@ -105,6 +110,16 @@ export default function UploadModal({ open, onOpenChange }: Props) {
                     </SelectContent>
                   </Select>
                 )}
+              />
+            </div>
+            <div className="grid grid-cols-1 items-center gap-4">
+              <Label htmlFor="comment" className="text-[#cccccc]">
+                Comment
+              </Label>
+              <Input
+                {...register("comment")}
+                placeholder="Add your comment here"
+                className="w-full bg-[#3c3c3c] border-[#6b6b6b] text-[#cccccc] focus:ring-[#007acc] focus:border-[#007acc]"
               />
             </div>
           </div>

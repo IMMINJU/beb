@@ -102,7 +102,7 @@ const TweetEmbed: React.FC<TweetEmbedProps> = ({
           )}
         >
           {comment ? (
-            <div className="bg-gray-700 rounded-t-lg flex items-stretch h-8 overflow-hidden">
+            <div className="bg-gray-700 rounded-lg flex items-stretch h-8 overflow-hidden">
               <Badge
                 variant="secondary"
                 className={clsx(
@@ -120,14 +120,14 @@ const TweetEmbed: React.FC<TweetEmbedProps> = ({
                 <p className="text-sm text-gray-300 truncate flex-grow">
                   {comment}
                 </p>
-                <Button
+                {/* <Button
                   variant="ghost"
                   size="sm"
                   className="text-blue-400 hover:text-blue-300 p-0 h-auto flex-shrink-0"
                   onClick={() => {}}
                 >
                   <MessageSquarePlus className="h-4 w-4" />
-                </Button>
+                </Button> */}
               </div>
             </div>
           ) : (
