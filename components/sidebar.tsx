@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import { useState } from "react";
+import { useState } from "react"
 import {
   Palette,
   Laugh,
@@ -19,12 +19,13 @@ import {
   Play,
   Repeat,
   StepForward,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Switch } from "@/components/ui/switch";
-import { usePathname, useRouter } from "next/navigation";
+} from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Switch } from "@/components/ui/switch"
+import { usePathname, useRouter } from "next/navigation"
+import type { Category } from "@/types/post"
 
 type SidebarView =
   | "explorer"
@@ -32,35 +33,36 @@ type SidebarView =
   | "git"
   | "debug"
   | "extensions"
-  | "hidden";
-type Category = "all" | "design" | "humor" | "tech";
+  | "hidden"
 
 interface Props {
-  searchQuery: string;
-  onChangeSearchQuery: (searchQuery: string) => void;
+  searchQuery: string
+  onChangeSearchQuery: (searchQuery: string) => void
 }
 
+const categories: Category[] = ["all", "tech", "design", "humor"]
+
 export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
-  const [sidebarView, setSidebarView] = useState<SidebarView>("explorer");
-  const router = useRouter();
-  const path = usePathname();
-  const pathname = path === "/" ? "all" : path.split("/")[1];
+  const [sidebarView, setSidebarView] = useState<SidebarView>("explorer")
+  const router = useRouter()
+  const path = usePathname()
+  const pathname = path === "/" ? "all" : path.split("/")[1]
 
   const categoryIcons = {
     all: <Globe className="h-4 w-4" />,
     design: <Palette className="h-4 w-4" />,
     humor: <Laugh className="h-4 w-4" />,
     tech: <Cpu className="h-4 w-4" />,
-  };
+  }
 
   const toggleSidebar = (mode: SidebarView) => {
     setSidebarView((prev) => {
       if (prev === mode) {
-        return "hidden";
+        return "hidden"
       }
-      return mode;
-    });
-  };
+      return mode
+    })
+  }
 
   const ExplorerView = () => (
     <div className="flex flex-col h-full">
@@ -71,25 +73,23 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
       </div>
       <ScrollArea className="flex-1">
         <div className="p-2 space-y-1">
-          {(["all", "tech", "design", "humor"] as Category[]).map(
-            (category) => (
-              <Button
-                key={category}
-                variant="ghost"
-                className={`w-full justify-start text-left pl-2 ${
-                  category === pathname ? "bg-[#37373d]" : "hover:bg-[#2a2d2e]"
-                }`}
-                onClick={() => router.push(category === "all" ? "/" : category)}
-              >
-                <span className="mr-2">{categoryIcons[category]}</span>
-                <span className="text-xs capitalize">{category}</span>
-              </Button>
-            )
-          )}
+          {categories.map((category) => (
+            <Button
+              key={category}
+              variant="ghost"
+              className={`w-full justify-start text-left pl-2 ${
+                category === pathname ? "bg-[#37373d]" : "hover:bg-[#2a2d2e]"
+              }`}
+              onClick={() => router.push(category === "all" ? "/" : category)}
+            >
+              <span className="mr-2">{categoryIcons[category]}</span>
+              <span className="text-xs capitalize">{category}</span>
+            </Button>
+          ))}
         </div>
       </ScrollArea>
     </div>
-  );
+  )
 
   const SearchView = () => (
     <div className="flex flex-col h-full">
@@ -122,7 +122,7 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
         </div>
       </ScrollArea>
     </div>
-  );
+  )
 
   const GitView = () => (
     <div className="flex flex-col h-full">
@@ -164,7 +164,7 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
         </div>
       </ScrollArea>
     </div>
-  );
+  )
 
   const DebugView = () => (
     <div className="flex flex-col h-full">
@@ -206,7 +206,7 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
         </div>
       </ScrollArea>
     </div>
-  );
+  )
 
   const ExtensionsView = () => (
     <div className="flex flex-col h-full">
@@ -239,7 +239,7 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
         </div>
       </ScrollArea>
     </div>
-  );
+  )
 
   return (
     <>
@@ -310,5 +310,5 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
         </div>
       )}
     </>
-  );
+  )
 }

@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { Plus } from "lucide-react";
+import { useState } from "react"
+import { Plus } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import UploadModal from "./upload-modal";
+} from "@/components/ui/dropdown-menu"
+import UploadModal from "./upload-modal"
 
 export default function TopMenuBar() {
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
 
   return (
     <>
@@ -51,5 +51,5 @@ export default function TopMenuBar() {
         onOpenChange={setIsUploadModalOpen}
       />
     </>
-  );
+  )
 }

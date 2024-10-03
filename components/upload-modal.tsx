@@ -1,73 +1,67 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Controller, useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Controller, useForm } from "react-hook-form"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createClient } from "@/utils/supabase/client";
-
-type Category = "all" | "design" | "humor" | "tech";
-
-type Project = {
-  id: number;
-  tweet_url: string;
-  category: Category;
-};
+} from "@/components/ui/select"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { createClient } from "@/utils/supabase/client"
+import type { PostType } from "@/types/post"
 
 async function createPost(category: string, tweet_url: string) {
-  const supabase = createClient();
+  const supabase = createClient()
   const { data, error } = await supabase
     .from("posts")
-    .insert([{ category, tweet_url }]);
+    .insert([{ category, tweet_url }])
 
   if (error) {
-    throw new Error(`Error creating post: ${error.message}`);
+    throw new Error(`Error creating post: ${error.message}`)
   }
 
-  return data;
+  return data
 }
 
-export default function UploadModal({
-  open,
-  onOpenChange,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) {
-  const queryClient = useQueryClient();
+type FormValues = Omit<PostType, "id">
 
-  const mutation = useMutation<any, any, Omit<Project, "id">>({
+interface Props {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
+
+export default function UploadModal({ open, onOpenChange }: Props) {
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation<null, Error, FormValues>({
     mutationFn: ({ category, tweet_url }) => createPost(category, tweet_url),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["posts"] }),
-  });
+  })
 
-  const { control, register, handleSubmit, reset } = useForm<
-    Omit<Project, "id">
-  >({ defaultValues: { tweet_url: "", category: "tech" } });
+  const { control, register, handleSubmit, reset } = useForm<FormValues>({
+    defaultValues: { tweet_url: "", category: "tech" },
+  })
 
   const onSubmit = handleSubmit((data) => {
     mutation.mutate(data, {
       onSuccess: () => {
-        reset();
-        onOpenChange(false);
+        reset()
+        onOpenChange(false)
       },
-    });
-  });
+    })
+  })
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -133,5 +127,5 @@ export default function UploadModal({
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

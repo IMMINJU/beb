@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import { GitBranch, Bell, Check } from "lucide-react";
+import { GitBranch, Bell, Check } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -22,5 +22,5 @@ export default function Footer() {
         </span>
       </div>
     </div>
-  );
+  )
 }

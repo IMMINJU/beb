@@ -1,31 +1,14 @@
 import type { Metadata } from "next"
-import localFont from "next/font/local"
 import "./globals.css"
 import { ReactQueryProvider } from "./react-query-provider"
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-})
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-})
+import type { PropsWithChildren } from "react"
 
 export const metadata: Metadata = { title: "Beb Kappa" }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body>
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>

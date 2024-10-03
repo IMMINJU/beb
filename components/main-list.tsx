@@ -1,43 +1,43 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import TopMenuBar from "@/components/top-menu-bar";
-import Sidebar from "@/components/sidebar";
-import Footer from "@/components/footer";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { createClient } from "@/utils/supabase/client";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import clsx from "clsx";
+import { useState } from "react"
+import TopMenuBar from "@/components/top-menu-bar"
+import Sidebar from "@/components/sidebar"
+import Footer from "@/components/footer"
+import InfiniteScroll from "react-infinite-scroll-component"
+import { createClient } from "@/utils/supabase/client"
+import { useInfiniteQuery } from "@tanstack/react-query"
+import clsx from "clsx"
 import {
   AlignHorizontalJustifyCenter,
   AlignVerticalJustifyCenter,
-} from "lucide-react";
-import { Button } from "./ui/button";
-import Post from "./post";
+} from "lucide-react"
+import { Button } from "./ui/button"
+import Post from "./post"
 
 const fetchData =
   (category: string) =>
   async ({ pageParam = 1 }) => {
-    const supabase = createClient();
-    const query = supabase.from("posts").select("*");
+    const supabase = createClient()
+    const query = supabase.from("posts").select("*")
 
     if (category !== "all") {
-      query.eq("category", category);
+      query.eq("category", category)
     }
 
     const { data, error } = await query
       .range((pageParam - 1) * 10, pageParam * 10 - 1)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
 
     if (error) {
-      throw error;
+      throw error
     }
-    return data;
-  };
+    return data
+  }
 
 export default function Main({ category }: { category: string }) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isTwoColumnLayout, setIsTwoColumnLayout] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("")
+  const [isTwoColumnLayout, setIsTwoColumnLayout] = useState(true)
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["posts", category],
@@ -45,12 +45,12 @@ export default function Main({ category }: { category: string }) {
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length === 10 ? allPages.length + 1 : undefined,
-  });
+  })
 
-  const posts = data?.pages.flat() || [];
+  const posts = data?.pages.flat() || []
 
   return (
-    <div className="flex flex-col h-screen font-['Consolas',_'Courier_New',_monospace] text-sm bg-[#1e1e1e] text-[#d4d4d4]">
+    <div className="flex flex-col h-screen font-['Consolas',_'Courier_New'] text-sm bg-[#1e1e1e] text-[#d4d4d4]">
       <TopMenuBar />
 
       <div className="flex flex-1 overflow-hidden">
@@ -96,11 +96,7 @@ export default function Main({ category }: { category: string }) {
                   })}
                 >
                   {posts.map((post) => (
-                    <Post
-                      key={post.id}
-                      post={post}
-                      isTwoColumnLayout={isTwoColumnLayout}
-                    />
+                    <Post key={post.id} post={post} />
                   ))}
                 </div>
               </InfiniteScroll>
@@ -111,5 +107,5 @@ export default function Main({ category }: { category: string }) {
 
       <Footer />
     </div>
-  );
+  )
 }
