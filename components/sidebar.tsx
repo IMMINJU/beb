@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Palette,
   Laugh,
@@ -27,6 +27,24 @@ import { Switch } from "@/components/ui/switch"
 import { usePathname, useRouter } from "next/navigation"
 import type { Category } from "@/types/post"
 
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(query)
+    setMatches(mediaQuery.matches)
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setMatches(e.matches)
+    }
+
+    mediaQuery.addEventListener("change", handleChange)
+    return () => mediaQuery.removeEventListener("change", handleChange)
+  }, [query])
+
+  return matches
+}
+
 type SidebarView =
   | "explorer"
   | "search"
@@ -43,7 +61,10 @@ interface Props {
 const categories: Category[] = ["all", "tech", "design", "humor"]
 
 export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
-  const [sidebarView, setSidebarView] = useState<SidebarView>("explorer")
+  const isLargeScreen = useMediaQuery("(min-width: 1024px)")
+  const [sidebarView, setSidebarView] = useState<SidebarView>(
+    isLargeScreen ? "explorer" : "hidden"
+  )
   const router = useRouter()
   const path = usePathname()
   const pathname = path === "/" ? "all" : path.split("/")[1]
@@ -241,9 +262,13 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
     </div>
   )
 
+  useEffect(() => {
+    setSidebarView(isLargeScreen ? "explorer" : "hidden")
+  }, [isLargeScreen])
+
   return (
     <>
-      <div className="w-12 bg-[#333333] flex flex-col items-center py-2 space-y-4">
+      <aside className="w-12 bg-[#333333] flex flex-col items-center py-2 space-y-4">
         <Button
           variant="ghost"
           size="icon"
@@ -297,7 +322,7 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
         >
           <Box className="h-5 w-5" />
         </Button>
-      </div>
+      </aside>
 
       {/* Sidebar */}
       {sidebarView !== "hidden" && (
