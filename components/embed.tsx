@@ -95,12 +95,7 @@ const TweetEmbed: React.FC<TweetEmbedProps> = ({
       </div>
 
       {iframePosition && (
-        <div
-          className={clsx(
-            "mt-2 transform transition-opacity delay-200 duration-300",
-            { "opacity-0": isLoading }
-          )}
-        >
+        <div className={clsx("mt-2", { hidden: isLoading })}>
           {comment ? (
             <div className="bg-gray-700 rounded-lg flex items-stretch h-8 overflow-hidden">
               <Badge

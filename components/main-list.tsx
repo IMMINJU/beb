@@ -7,13 +7,14 @@ import Footer from "@/components/footer"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { createClient } from "@/utils/supabase/client"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import clsx from "clsx"
+import Masonry from "react-masonry-css"
 import {
   AlignHorizontalJustifyCenter,
   AlignVerticalJustifyCenter,
 } from "lucide-react"
 import { Button } from "./ui/button"
 import Post from "./post"
+import { PAGE_SIZE } from "@/constant/pagination"
 
 const fetchData =
   (category: string) =>
@@ -26,7 +27,7 @@ const fetchData =
     }
 
     const { data, error } = await query
-      .range((pageParam - 1) * 10, pageParam * 10 - 1)
+      .range((pageParam - 1) * PAGE_SIZE, pageParam * PAGE_SIZE - 1)
       .order("created_at", { ascending: false })
 
     if (error) {
@@ -44,7 +45,7 @@ export default function Main({ category }: { category: string }) {
     queryFn: fetchData(category),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) =>
-      lastPage.length === 10 ? allPages.length + 1 : undefined,
+      lastPage.length === PAGE_SIZE ? allPages.length + 1 : undefined,
   })
 
   const posts = data?.pages.flat() || []
@@ -90,15 +91,15 @@ export default function Main({ category }: { category: string }) {
                 loader={<h4>Loading...</h4>}
                 scrollableTarget="scrollableDiv"
               >
-                <div
-                  className={clsx("columns-1 gap-4 space-y-4", {
-                    "md:columns-2": isTwoColumnLayout,
-                  })}
+                <Masonry
+                  breakpointCols={{ default: 2, 1024: 1 }}
+                  className="my-masonry-grid"
+                  columnClassName="my-masonry-grid_column"
                 >
                   {posts.map((post) => (
                     <Post key={post.id} post={post} />
                   ))}
-                </div>
+                </Masonry>
               </InfiniteScroll>
             </div>
           </div>
