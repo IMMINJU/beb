@@ -1,4 +1,4 @@
-export type Category = "all" | "design" | "humor" | "tech"
+import type { Category } from "@/constant/categories"
 
 export type PostType = {
   id: string

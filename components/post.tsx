@@ -39,6 +39,7 @@ export default function Post({ post }: Props) {
             "border-[#0e639c]": post.category === "tech",
             "border-[#FFA500]": post.category === "humor",
             "border-[#8A2BE2]": post.category === "design",
+            "border-[#10B981]": post.category === "book",
           })}
         >
           <TweetEmbed

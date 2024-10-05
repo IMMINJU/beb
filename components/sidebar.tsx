@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { type ReactNode, useEffect, useState } from "react"
 import {
   Palette,
   Laugh,
@@ -19,31 +19,22 @@ import {
   Play,
   Repeat,
   StepForward,
+  Calendar,
+  Book,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Switch } from "@/components/ui/switch"
 import { usePathname, useRouter } from "next/navigation"
-import type { Category } from "@/types/post"
+import { type Category, CATEGORY_LIST } from "@/constant/categories"
+import useMediaQuery from "@/hooks/useMediaQuery"
 
-function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState(false)
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(query)
-    setMatches(mediaQuery.matches)
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setMatches(e.matches)
-    }
-
-    mediaQuery.addEventListener("change", handleChange)
-    return () => mediaQuery.removeEventListener("change", handleChange)
-  }, [query])
-
-  return matches
-}
+const SIDEBAR_LIST: ("all" | "schedule" | Category)[] = [
+  "all",
+  ...CATEGORY_LIST,
+  "schedule",
+]
 
 type SidebarView =
   | "explorer"
@@ -53,14 +44,7 @@ type SidebarView =
   | "extensions"
   | "hidden"
 
-interface Props {
-  searchQuery: string
-  onChangeSearchQuery: (searchQuery: string) => void
-}
-
-const categories: Category[] = ["all", "tech", "design", "humor"]
-
-export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
+export default function Sidebar() {
   const isLargeScreen = useMediaQuery("(min-width: 1024px)")
   const [sidebarView, setSidebarView] = useState<SidebarView>(
     isLargeScreen ? "explorer" : "hidden"
@@ -69,11 +53,13 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
   const path = usePathname()
   const pathname = path === "/" ? "all" : path.split("/")[1]
 
-  const categoryIcons = {
+  const categoryIcons: { [key in (typeof SIDEBAR_LIST)[number]]: ReactNode } = {
     all: <Globe className="h-4 w-4" />,
     design: <Palette className="h-4 w-4" />,
     humor: <Laugh className="h-4 w-4" />,
     tech: <Cpu className="h-4 w-4" />,
+    book: <Book className="h-4 w-4" />,
+    schedule: <Calendar className="h-4 w-4" />,
   }
 
   const toggleSidebar = (mode: SidebarView) => {
@@ -94,7 +80,7 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
       </div>
       <ScrollArea className="flex-1">
         <div className="p-2 space-y-1">
-          {categories.map((category) => (
+          {SIDEBAR_LIST.map((category) => (
             <Button
               key={category}
               variant="ghost"
@@ -121,8 +107,8 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
         <Input
           type="text"
           placeholder="Search tweets..."
-          value={searchQuery}
-          onChange={(e) => onChangeSearchQuery(e.target.value)}
+          // value={searchQuery}
+          // onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full bg-[#3c3c3c] border-[#6b6b6b] text-[#cccccc] focus:ring-[#007acc] focus:border-[#007acc]"
         />
       </div>
@@ -285,6 +271,7 @@ export default function Sidebar({ searchQuery, onChangeSearchQuery }: Props) {
           className={`hover:bg-[#505050] ${
             sidebarView === "search" ? "bg-[#505050]" : ""
           }`}
+          disabled
           onClick={() => toggleSidebar("search")}
         >
           <Search className="h-5 w-5" />

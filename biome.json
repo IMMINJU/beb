@@ -8,6 +8,9 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "a11y": {
+        "useKeyWithClickEvents": "off"
+      },
       "style": {
         "noNonNullAssertion": "off",
         "noParameterAssign": "off"

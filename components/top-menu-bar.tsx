@@ -42,7 +42,7 @@ export default function TopMenuBar() {
           <span className="mr-4 px-2 py-1 rounded">Go</span>
           <span className="mr-4 px-2 py-1 rounded">Run</span>
           <span className="mr-4 px-2 py-1 rounded">Terminal</span>
-          <span className="px-2 py-1 rounded">Help</span>
+          <span className="hidden sm:block px-2 py-1 rounded">Help</span>
         </div>
       </div>
 

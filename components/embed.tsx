@@ -106,6 +106,7 @@ const TweetEmbed: React.FC<TweetEmbedProps> = ({
                     "bg-[#0e639c] hover:bg-[#0e639c]": category === "tech",
                     "bg-[#FFA500] hover:bg-[#FFA500]": category === "humor",
                     "bg-[#8A2BE2] hover:bg-[#8A2BE2]": category === "design",
+                    "bg-[#10B981] hover:bg-[#10B981]": category === "book",
                   }
                 )}
               >
@@ -130,14 +131,12 @@ const TweetEmbed: React.FC<TweetEmbedProps> = ({
               <Badge
                 variant="secondary"
                 className={clsx(
-                  "text-white text-xs rounded-lg h-8 w-min flex items-center justify-center px-2 py-1",
+                  "text-white text-xs rounded-lg h-8 w-min flex items-center justify-center px-2 py-1 transition-opacity hover:opacity-80",
                   {
-                    "bg-[#0e639c] transition-opacity hover:opacity-80 hover:bg-[#0e639c]":
-                      category === "tech",
-                    "bg-[#FFA500] transition-opacity hover:opacity-80 hover:bg-[#FFA500]":
-                      category === "humor",
-                    "bg-[#8A2BE2] transition-opacity hover:opacity-80 hover:bg-[#8A2BE2]":
-                      category === "design",
+                    "bg-[#0e639c] hover:bg-[#0e639c]": category === "tech",
+                    "bg-[#FFA500] hover:bg-[#FFA500]": category === "humor",
+                    "bg-[#8A2BE2] hover:bg-[#8A2BE2]": category === "design",
+                    "bg-[#10B981] hover:bg-[#10B981]": category === "book",
                   }
                 )}
               >

@@ -21,6 +21,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createClient } from "@/utils/supabase/client"
 import type { PostType } from "@/types/post"
+import { CATEGORY_LIST } from "@/constant/categories"
 
 async function createPost(
   category: string,
@@ -104,9 +105,12 @@ export default function UploadModal({ open, onOpenChange }: Props) {
                       <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="design">Design</SelectItem>
-                      <SelectItem value="humor">Humor</SelectItem>
-                      <SelectItem value="tech">Tech</SelectItem>
+                      {CATEGORY_LIST.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category.slice(0, 1).toUpperCase() +
+                            category.slice(1)}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 )}

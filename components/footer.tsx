@@ -13,7 +13,7 @@ export default function Footer() {
           <Check className="h-4 w-4 mr-1" /> 0 ⚠ 0 ❌
         </span>
       </div>
-      <div className="flex items-center space-x-4">
+      <div className="hidden sm:flex items-center space-x-4">
         <span>Ln 1, Col 1</span>
         <span>Spaces: 2</span>
         <span>UTF-8</span>

@@ -97,3 +97,134 @@ body {
 .my-masonry-grid_column > div {
   margin-bottom: 30px;
 }
+
+/* custom-calendar.css */
+
+/* 전체 달력 배경색 및 텍스트 색상 */
+.rbc-calendar {
+  background-color: #2d2d2d !important;
+  color: #d4d4d4 !important;
+}
+
+/* 헤더 스타일 */
+.rbc-header {
+  background-color: #3c3c3c !important;
+  color: #d4d4d4 !important;
+}
+
+/* 툴바 스타일 */
+.rbc-toolbar {
+  background-color: #3c3c3c !important;
+  color: #d4d4d4 !important;
+}
+
+.rbc-toolbar button {
+  color: #d4d4d4 !important;
+  background: none !important;
+  border: none !important;
+  padding: 4px 8px !important;
+  cursor: pointer;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #4a4a4a !important;
+  border-radius: 4px !important;
+}
+
+.rbc-toolbar label {
+  color: #cccccc !important;
+}
+
+/* 월 보기의 셀 배경 및 경계 */
+.rbc-month-view {
+  background-color: #2d2d2d !important;
+}
+
+.rbc-month-view .rbc-day-bg {
+  background-color: #2d2d2d !important;
+  border: 1px solid #3c3c3c !important;
+  position: relative;
+  min-height: 120px; /* 셀의 최소 높이 설정 */
+}
+
+/* 셀 내부 날짜 숫자 스타일 */
+.rbc-month-view .rbc-date-cell {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+/* Off-range 날짜 스타일 */
+.rbc-off-range {
+  background-color: #2d2d2d !important;
+  color: #666666 !important;
+}
+
+/* 오늘 날짜 강조 */
+.rbc-today {
+  background-color: #3c3c3c !important;
+  color: #d4d4d4 !important;
+}
+
+/* 이벤트 스타일 */
+.rbc-event {
+  background-color: transparent !important; /* 배경 투명 */
+  border: none !important;
+  color: #d4d4d4 !important; /* 텍스트 색상 */
+  box-shadow: none !important; /* 그림자 제거 */
+  padding: 2px 4px !important; /* 패딩 조정 */
+  border-radius: 4px !important; /* 약간의 둥근 모서리 */
+}
+
+.rbc-event:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important; /* 호버 시 약간의 배경색 추가 */
+}
+
+/* 완료된 이벤트 스타일 */
+.rbc-event.completed {
+  text-decoration: line-through;
+  color: #888888 !important;
+}
+
+/* 미완료된 이벤트 스타일 */
+.rbc-event.incomplete {
+  color: #d4d4d4 !important;
+}
+
+/* 주말 배경색 */
+.rbc-day-bg.rbc-weekend {
+  background-color: #3c3c3c !important;
+}
+
+/* 헤더의 요일 텍스트 색상 */
+.rbc-month-view .rbc-header {
+  color: #d4d4d4 !important;
+}
+
+/* 이벤트 컴포넌트 내부 스타일 */
+.custom-event {
+  display: flex;
+  align-items: center;
+}
+
+.custom-event .status-icon {
+  margin-right: 4px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .rbc-calendar {
+    font-size: 12px !important;
+  }
+
+  .custom-event {
+    font-size: 0.75rem !important; /* text-xs */
+  }
+
+  .rbc-month-view .rbc-header {
+    height: 30px !important;
+  }
+
+  .rbc-month-view .rbc-day-bg {
+    min-height: 80px !important; /* 모바일에서 셀 높이 조정 */
+  }
+}
