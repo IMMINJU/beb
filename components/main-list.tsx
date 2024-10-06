@@ -1,32 +1,12 @@
 "use client"
 
 import InfiniteScroll from "react-infinite-scroll-component"
-import { createClient } from "@/utils/supabase/client"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import Masonry from "react-masonry-css"
 import Post from "./post"
 import { PAGE_SIZE } from "@/constant/pagination"
 import type { Category } from "@/constant/categories"
-
-const fetchData =
-  (category?: Category) =>
-  async ({ pageParam = 1 }) => {
-    const supabase = createClient()
-    const query = supabase.from("posts").select("*")
-
-    if (category) {
-      query.eq("category", category)
-    }
-
-    const { data, error } = await query
-      .range((pageParam - 1) * PAGE_SIZE, pageParam * PAGE_SIZE - 1)
-      .order("created_at", { ascending: false })
-
-    if (error) {
-      throw error
-    }
-    return data
-  }
+import { fetchPosts } from "@/services/postService"
 
 interface Props {
   category?: Category
@@ -35,7 +15,7 @@ interface Props {
 export default function Main({ category }: Props) {
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["posts", category],
-    queryFn: fetchData(category),
+    queryFn: fetchPosts(category),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length === PAGE_SIZE ? allPages.length + 1 : undefined,

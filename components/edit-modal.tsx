@@ -1,75 +1,68 @@
-"use client"
-
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Controller, useForm } from "react-hook-form"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog"
+import { Button } from "./ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog"
+import { Input } from "./ui/input"
+import { Label } from "./ui/label"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import type { PostType } from "@/types/post"
+} from "./ui/select"
 import { CATEGORY_LIST } from "@/constant/categories"
-import { createPost } from "@/services/postService"
+import type { PostType } from "@/types/post"
+import { Trash } from "lucide-react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { editPost, deletePost } from "@/services/postService"
 
-type FormValues = Omit<PostType, "id">
+type FormValues = Pick<PostType, "id" | "category" | "comment">
 
 interface Props {
+  post: PostType
   open: boolean
-  onOpenChange: (open: boolean) => void
+  setOpen: (open: boolean) => void
 }
 
-export default function UploadModal({ open, onOpenChange }: Props) {
+const EditModal = ({ post, open, setOpen }: Props) => {
   const queryClient = useQueryClient()
+  const { control, register, handleSubmit, reset } = useForm<FormValues>({
+    defaultValues: post,
+  })
 
-  const mutation = useMutation<null, Error, FormValues>({
-    mutationFn: ({ category, tweet_url, comment }) =>
-      createPost(category, tweet_url, comment),
+  const editMutation = useMutation<void, Error, FormValues>({
+    mutationFn: ({ id, category, comment }) => editPost(id, category, comment),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["posts"] }),
   })
 
-  const { control, register, handleSubmit, reset } = useForm<FormValues>({
-    defaultValues: { tweet_url: "", category: "tech" },
+  const deleteMutation = useMutation<void, Error, string>({
+    mutationFn: (id) => deletePost(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["posts"] }),
   })
 
   const onSubmit = handleSubmit((data) => {
-    mutation.mutate(data, {
+    editMutation.mutate(data, {
       onSuccess: () => {
         reset()
-        onOpenChange(false)
+        setOpen(false)
       },
     })
   })
 
+  const handleDelete = () => {
+    deleteMutation.mutate(post.id, {
+      onSuccess: () => setOpen(false),
+    })
+  }
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px] bg-[#252526] text-[#cccccc] border border-[#3c3c3c]">
         <DialogHeader>
-          <DialogTitle className="text-[#cccccc]">Upload New Tweet</DialogTitle>
+          <DialogTitle className="text-[#cccccc]">Edit Post</DialogTitle>
         </DialogHeader>
         <form onSubmit={onSubmit}>
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-1 items-center gap-4">
-              <Label htmlFor="tweet_url" className="text-[#cccccc]">
-                Tweet URL
-              </Label>
-              <Input
-                {...register("tweet_url", { required: true })}
-                autoComplete="off"
-                className="w-full bg-[#3c3c3c] border-[#6b6b6b] text-[#cccccc] focus:ring-[#007acc] focus:border-[#007acc]"
-              />
-            </div>
             <div className="grid grid-cols-1 items-center gap-4">
               <Label htmlFor="category" className="text-[#cccccc]">
                 Category
@@ -110,24 +103,26 @@ export default function UploadModal({ open, onOpenChange }: Props) {
               />
             </div>
           </div>
-          <DialogFooter>
+          <div className="flex justify-between">
             <Button
-              variant="outline"
-              onClick={() => onOpenChange(false)}
+              variant="destructive"
               type="button"
-              className="bg-[#3c3c3c] text-[#cccccc] hover:bg-[#505050] border-[#6b6b6b]"
+              onClick={handleDelete}
+              className="bg-[#f44747] hover:bg-[#d73a49] text-white"
             >
-              Cancel
+              <Trash className="h-4 w-4" />
             </Button>
             <Button
               type="submit"
-              className="bg-[#0e639c] text-white hover:bg-[#1177bb]"
+              className="bg-[#0e639c] hover:bg-[#1177bb] text-white"
             >
-              Upload
+              Submit
             </Button>
-          </DialogFooter>
+          </div>
         </form>
       </DialogContent>
     </Dialog>
   )
 }
+
+export default EditModal

@@ -10,27 +10,6 @@ interface Props {
 }
 
 export default function Post({ post }: Props) {
-  // const supabase = createClient()
-  // const queryClient = useQueryClient()
-
-  // const deleteMutation = useMutation({
-  //   mutationFn: async () => {
-  //     const { data, error } = await supabase
-  //       .from("posts")
-  //       .delete()
-  //       .eq("id", post.id)
-  //     if (error) {
-  //       throw error
-  //     }
-  //     return data
-  //   },
-  //   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["posts"] }),
-  // })
-
-  // const handleDelete = () => {
-  //   deleteMutation.mutate()
-  // }
-
   return (
     <Card className="mx-auto p-0 bg-[#1e1e1e] border-none max-w-[560px]">
       <CardContent className="relative p-0">
