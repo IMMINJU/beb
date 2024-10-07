@@ -8,10 +8,16 @@ import type { PostType } from "@/types/post"
 import { ScrollArea } from "./ui/scroll-area"
 import { Input } from "./ui/input"
 
+type Comemnt = {
+  id: number
+  author: string
+  content: string
+}
+
 function ThreadSidebar({ post }: { post: PostType }) {
   const [newComment, setNewComment] = useState("")
 
-  const threadComments = [
+  const threadComments: Comemnt[] = [
     // {
     //   id: 1,
     //   author: "홍길동",
